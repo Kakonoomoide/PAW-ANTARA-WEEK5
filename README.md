@@ -4,13 +4,13 @@ Dua halaman web statis (HTML + CSS + JS native, tanpa library) yang terhubung le
 
 ## Halaman
 
-### Etalase (`index.html`)
+### Etalase (`public/index.html`)
 Katalog produk yang datanya diambil dari [dummyjson.com/products](https://dummyjson.com/products).
 - Cari produk berdasarkan nama
 - Filter berdasarkan kategori
 - Badge "Stok Menipis" untuk produk dengan stok di bawah 10
 
-### Caption (`form.html`)
+### Caption (`public/form.html`)
 Generator caption produk untuk media sosial.
 1. Isi **nama produk** dan **harga**
 2. Pilih template: **Promo**, **Santai**, atau **Formal**
@@ -25,23 +25,31 @@ Harga otomatis diformat ke Rupiah, nama produk otomatis dijadikan hashtag (`kopi
 | Nama Produk | wajib, 3–60 karakter, harus mengandung huruf |
 | Harga | wajib, angka bulat, Rp 1.000 – Rp 100.000.000 |
 
-## Struktur File
+## Struktur Folder
 
-| File | Isi |
-|---|---|
-| `index.html` / `index.js` | Halaman Etalase dan logika fetch, cari, filter |
-| `index.css` | Style utama yang dipakai **kedua** halaman (warna, font, nav, header, footer) |
-| `form.html` / `form.js` | Halaman Caption, template caption, dan validasi |
-| `form.css` | Style khusus form (dimuat setelah `index.css`) |
-| `fetch.js` | Script uji coba fetch API |
-| `test.js` | Script latihan |
+```
+week5-revision/
+├── public/
+│   ├── index.html      # halaman Etalase
+│   ├── form.html       # halaman Caption
+│   ├── css/
+│   │   ├── index.css   # style utama, dipakai kedua halaman (warna, font, nav, header, footer)
+│   │   └── form.css    # style khusus form (dimuat setelah index.css)
+│   └── js/
+│       ├── index.js    # fetch, cari, dan filter produk
+│       └── form.js     # template caption dan validasi
+├── latihan/
+│   ├── fetch.js        # script uji coba fetch API
+│   └── test.js         # script latihan
+└── README.md
+```
 
 ## Cara Menjalankan
 
-Buka `index.html` di browser. Tidak perlu install apa pun, tapi halaman Etalase butuh koneksi internet untuk mengambil data produk.
+Buka `public/index.html` di browser. Tidak perlu install apa pun, tapi halaman Etalase butuh koneksi internet untuk mengambil data produk.
 
 ## Kustomisasi
 
-- **Tambah template caption:** tambahkan entri baru di objek `templates` di `form.js`, lalu tambahkan `<option>` dengan `value` yang sama di `form.html`.
-- **Ubah batas validasi:** edit objek `rules` di `form.js`.
+- **Tambah template caption:** tambahkan entri baru di objek `templates` di `public/js/form.js`, lalu tambahkan `<option>` dengan `value` yang sama di `public/form.html`.
+- **Ubah batas validasi:** edit objek `rules` di `public/js/form.js`.
 - **Tambah halaman baru:** tambahkan link di `<nav>` pada setiap file HTML, dan beri `aria-current="page"` pada link halaman yang sedang aktif.
