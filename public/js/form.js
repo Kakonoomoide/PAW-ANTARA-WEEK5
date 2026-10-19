@@ -1,3 +1,21 @@
+/**
+ * @file form.js — halaman Caption.
+ * Validasi input nama produk & harga, lalu buat caption dari template yang dipilih.
+ */
+
+/**
+ * Fungsi pembuat caption.
+ * @callback TemplateFn
+ * @param {string} nama - Nama produk.
+ * @param {string} harga - Harga yang sudah diformat Rupiah, contoh `"Rp 25.000"`.
+ * @param {string} tag - Nama produk dalam bentuk hashtag (PascalCase, tanpa `#`).
+ * @returns {string} Caption lengkap.
+ */
+
+/**
+ * Template caption. Key-nya harus sama dengan `value` di `<select id="template">`.
+ * @type {Object<string, TemplateFn>}
+ */
 const templates = {
     promo: (nama, harga, tag) => `🔥🔥 PROMO SPESIAL HARI INI! 🔥🔥
 
@@ -44,7 +62,12 @@ Untuk pemesanan dan informasi lebih lanjut, silakan hubungi kami melalui pesan l
 
 const form = document.getElementById("form");
 
-// tiap aturan balikin pesan error, atau "" kalau valid
+/**
+ * Aturan validasi per input. Key-nya sama dengan `id` input di form.
+ * Tiap aturan menerima nilai input dan mengembalikan pesan error,
+ * atau string kosong `""` kalau valid.
+ * @type {Object<string, function(string): string>}
+ */
 const rules = {
     nama: (v) => {
         v = v.trim();
@@ -64,6 +87,11 @@ const rules = {
     },
 };
 
+/**
+ * Validasi satu input: tampilkan pesan error di bawahnya dan set `aria-invalid`.
+ * @param {string} id - `id` input, harus ada di {@link rules}.
+ * @returns {boolean} `true` kalau valid.
+ */
 function validate(id) {
     const input = document.getElementById(id);
     const msg = rules[id](input.value);

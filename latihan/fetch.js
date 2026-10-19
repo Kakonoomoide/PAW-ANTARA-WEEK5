@@ -1,3 +1,7 @@
+/**
+ * Uji coba fetch 10 produk dari dummyjson, hasilnya dicetak ke console.
+ * @returns {Promise<void>}
+ */
 async function testFetchAPI() {
   const testUrl = "https://dummyjson.com/products?limit=10";
   try {

@@ -1,5 +1,23 @@
-// index.js — fetch produk dari dummyjson API pakai fetch native (tanpa library)
+/**
+ * @file index.js — halaman Etalase.
+ * Mengambil produk dari dummyjson API pakai fetch native (tanpa library),
+ * lalu menampilkannya sebagai kartu yang bisa dicari dan difilter per kategori.
+ */
 
+/**
+ * Data produk dari dummyjson (hanya field yang dipakai di halaman ini).
+ * @typedef {Object} Product
+ * @property {string} title - Nama produk.
+ * @property {string} category - Kategori produk.
+ * @property {string} [brand] - Merek, bisa kosong.
+ * @property {number} price - Harga dalam USD.
+ * @property {number} discountPercentage - Persentase diskon.
+ * @property {number} rating - Rating 0–5.
+ * @property {number} stock - Jumlah stok.
+ * @property {string} thumbnail - URL gambar thumbnail.
+ */
+
+/** Endpoint daftar produk (maksimal 100 produk). */
 const API_URL = "https://dummyjson.com/products?limit=100";
 
 const statusEl = document.getElementById("status");
@@ -7,14 +25,27 @@ const gridEl = document.getElementById("productGrid");
 const searchInput = document.getElementById("searchInput");
 const categorySelect = document.getElementById("categorySelect");
 
-let allProducts = []; // simpan semua produk hasil fetch, biar bisa difilter tanpa fetch ulang
+/**
+ * Semua produk hasil fetch, disimpan supaya bisa difilter tanpa fetch ulang.
+ * @type {Product[]}
+ */
+let allProducts = [];
 
-// format angka ke Rupiah supaya enak dibaca
+/**
+ * Format harga USD jadi teks dengan 2 angka desimal.
+ * @param {number} usd - Harga dalam USD.
+ * @returns {string} Contoh: `9.5` → `"$9.50"`.
+ */
 function formatPrice(usd) {
-  // dummyjson pakai USD, tinggal ditampilkan apa adanya dalam format mata uang
   return `$${usd.toFixed(2)}`;
 }
 
+/**
+ * Tampilkan daftar produk sebagai kartu di grid.
+ * Kalau daftar kosong, tampilkan pesan "Produk tidak ditemukan.".
+ * @param {Product[]} products - Produk yang mau ditampilkan.
+ * @returns {void}
+ */
 function renderProducts(products) {
   gridEl.innerHTML = "";
 
@@ -62,6 +93,11 @@ function renderProducts(products) {
   gridEl.appendChild(fragment);
 }
 
+/**
+ * Isi dropdown kategori dengan kategori unik (urut abjad) dari daftar produk.
+ * @param {Product[]} products - Sumber kategori.
+ * @returns {void}
+ */
 function populateCategoryOptions(products) {
   const categories = [...new Set(products.map((p) => p.category))].sort();
 
@@ -73,6 +109,11 @@ function populateCategoryOptions(products) {
   });
 }
 
+/**
+ * Filter {@link allProducts} berdasarkan kata kunci pencarian dan kategori
+ * yang dipilih, lalu render ulang hasilnya.
+ * @returns {void}
+ */
 function applyFilters() {
   const keyword = searchInput.value.trim().toLowerCase();
   const category = categorySelect.value;
@@ -86,6 +127,11 @@ function applyFilters() {
   renderProducts(filtered);
 }
 
+/**
+ * Ambil produk dari {@link API_URL}, isi dropdown kategori, lalu render semua produk.
+ * Kalau gagal, pesan error ditampilkan di elemen status.
+ * @returns {Promise<void>}
+ */
 async function fetchProducts() {
   try {
     statusEl.textContent = "Memuat produk...";
